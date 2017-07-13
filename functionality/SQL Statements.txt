@@ -1,0 +1,55 @@
+SQL STATEMENTS
+
+
+//User can set phone number
+UPDATE tblUser SET `uPhone`='0478151177' WHERE userID = 2
+
+//User can set password
+UPDATE tblUser SET 'uPass'='password' WHERE userID = 2
+
+//User can set email
+UPDATE tblUser SET 'uEmail'='user@email.class.domain' WHERE userID = 2
+
+//Create User
+INSERT INTO `tblUser`(`userID`, `uPass`, `uType`, `uName`, `uEmail`, `uPhone`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6])
+
+//Create payslip
+INSERT INTO `tblPayslip`(`payslipID`, `userID`, `uName`, `uRate`) VALUES ([value-1],[value-2],[value-3],[value-4])
+
+//Create shift
+INSERT INTO `tblShift`(`shiftID`, `userID`, `shiftDate`, `clockON`, `clockOFF`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5])
+
+//Create bank details
+INSERT INTO `tblBank`(`userID`, `accountID`, `BSB`) VALUES ([value-1],[value-2],[value-3])
+
+//User with basic access can view account details of own account
+SELECT * `tblUser` WHERE userID = [value-1]
+
+//User with basic access can view bank details of own account
+SELECT * `tblBank` WHERE userID = [value-1]
+
+//User with manager access can view account details of all accounts excluding passwords
+SELECT * INTO #tempuser
+FROM tblUser
+ALTER TABLE #Tempuser
+DROP COLUMN uPass
+SELECT * FROM #TempUser
+DROP TABLE #TempUser
+
+//User can clock on shift
+INSERT INTO `tblShift`(`userID`, `shiftDate`, `clockON`) VALUES (4,CURRENT_DATE,CURRENT_TIME)
+
+//User can clock off shift
+UPDATE 'tblShift' SET 'clockOFF'='current_timestamp WHERE userID = [value-1]
+
+//Select shift hours and place into alias for payslip
+SELECT TIMESTAMPDIFF(hour, clockON, clockOFF) AS totalHours FROM tblShift WHERE userID = [value-1]
+SELECT clockON, (totalHours* 20) AS AmountPaid FROM tblClockInOut WHERE clockON between 0000/00/00 and 0000/00/00
+
+//User can update bank details
+UPDATE `tblBank` SET `userID`=[value-1],`accountID`=[value-2],`BSB`=[value-3] WHERE userID = [value-1]
+
+//Deleting user from all tables
+DELETE FROM tblUser WHERE userID = [value-1]
+DELETE FROM tblBank WHERE userID = [value-1]
+DELETE FROM tblShift WHERE userID = [value-1]

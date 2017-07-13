@@ -1,0 +1,17 @@
+PHP Statements
+
+//PHP Password Entry
+
+//encrypt php password
+
+$password = $_POST['password'];
+$salt = "8dC_9Kl?";
+$encrypted password = sha2($password . $salt);
+
+//Compare password to database
+
+$db_password = ""; //get the password from the database
+if (sha2($password . $salt) == $db_password)
+{
+// continue...
+}
